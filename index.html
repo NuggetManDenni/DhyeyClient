@@ -60,11 +60,12 @@
     </style>
     <script src="bootstrap.js"></script>
     <script>
+      "use strict";
       function launchGame() {
         document.getElementById("splash").style.display = "none";
         document.getElementById("game_frame").style.display = "block";
 
-        var relayId = Math.floor(Math.random() * 3);
+        const relayId = Math.floor(Math.random() * 3);
         window.eaglercraftXOpts = {
           demoMode: false,
           container: "game_frame",
@@ -78,4 +79,25 @@
           ]
         };
 
-        const
+        const q = new URLSearchParams(window.location.search);
+        const s = q.get("server");
+        if (s) window.eaglercraftXOpts.joinServer = s;
+
+        main();
+      }
+
+      window.addEventListener("load", () => {
+        if (window.location.href.startsWith("file:")) {
+          alert("Please run this over HTTP, not as a local file.");
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div id="splash">
+      <h1>🚀 Astral Client</h1>
+      <button id="launchBtn" onclick="launchGame()">Launch Minecraft</button>
+    </div>
+    <div id="game_frame"></div>
+  </body>
+</html>
