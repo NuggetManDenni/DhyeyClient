@@ -1,59 +1,81 @@
 <!DOCTYPE html>
-<html lang="en" style="margin:0;padding:0;height:100%;width:100%;">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Astral Client</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="favicon.png" />
-    <meta name="description" content="Play Minecraft 1.12 in your browser with Astral Client" />
-    <meta name="keywords" content="astral, client, eaglercraft, minecraft, 1.12, 1.12.2" />
-    <meta property="og:title" content="Astral Client - Eaglercraft 1.12 WASM" />
-    <meta property="og:description" content="Astral Client lets you play Minecraft 1.12 right in your browser!" />
-    <meta property="og:image" content="favicon.png" />
     <style>
       html, body {
         margin: 0;
         padding: 0;
         height: 100%;
         width: 100%;
-        background-color: black;
+        background: url("space-bg.jpg") no-repeat center center fixed;
+        background-size: cover;
+        font-family: 'Segoe UI', sans-serif;
+        color: white;
         overflow: hidden;
       }
+
+      #splash {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+      }
+
+      #splash h1 {
+        font-size: 3em;
+        margin-bottom: 20px;
+        text-shadow: 0 0 10px #00f0ff;
+      }
+
+      #launchBtn {
+        padding: 15px 30px;
+        font-size: 1.2em;
+        background: linear-gradient(45deg, #00f0ff, #7a00ff);
+        border: none;
+        border-radius: 10px;
+        color: white;
+        cursor: pointer;
+        box-shadow: 0 0 15px #00f0ff;
+        transition: transform 0.2s ease;
+      }
+
+      #launchBtn:hover {
+        transform: scale(1.05);
+      }
+
       #game_frame {
         width: 100%;
         height: 100%;
+        display: none;
       }
     </style>
     <script src="bootstrap.js"></script>
     <script>
-      "use strict";
-      window.addEventListener("load", function () {
-        if (window.location.href.indexOf("file:") === 0) {
-          alert("Please run this over HTTP, not as a local file.");
-        } else {
-          var relayId = Math.floor(Math.random() * 3);
-          window.eaglercraftXOpts = {
-            demoMode: false,
-            container: "game_frame",
-            assetsURI: "assets.epw",
-            worldsDB: "worlds",
-            servers: [],
-            relays: [
-              { addr: "wss://relay.deev.is/", primary: relayId === 0 },
-              { addr: "wss://relay.lax1dude.net/", primary: relayId === 1 },
-              { addr: "wss://relay.shhnowisnottheti.me/", primary: relayId === 2 }
-            ]
-          };
-          const q = new URLSearchParams(window.location.search);
-          const s = q.get("server");
-          if (s) window.eaglercraftXOpts.joinServer = s;
-          main();
-        }
-      });
-    </script>
-  </head>
-  <body>
-    <div id="game_frame"></div>
-  </body>
-</html>
+      function launchGame() {
+        document.getElementById("splash").style.display = "none";
+        document.getElementById("game_frame").style.display = "block";
 
+        var relayId = Math.floor(Math.random() * 3);
+        window.eaglercraftXOpts = {
+          demoMode: false,
+          container: "game_frame",
+          assetsURI: "assets.epw",
+          worldsDB: "worlds",
+          servers: [],
+          relays: [
+            { addr: "wss://relay.deev.is/", primary: relayId === 0 },
+            { addr: "wss://relay.lax1dude.net/", primary: relayId === 1 },
+            { addr: "wss://relay.shhnowisnottheti.me/", primary: relayId === 2 }
+          ]
+        };
+
+        const
