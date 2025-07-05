@@ -1,0 +1,20 @@
+public void drawButton(Minecraft mc, int mouseX, int mouseY) {
+    if (this.visible) {
+        mc.getTextureManager().bindTexture(new ResourceLocation("astralassets:textures/gui/widgets.png"));
+        FontRenderer fontrenderer = mc.fontRenderer;
+        
+        // Determine hover state
+        this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+        int hoverState = this.getHoverState(this.hovered); // 0 = normal, 1 = hover, 2 = pressed
+
+        // Y-offset per button state (each state is 20px tall in widgets.png)
+        int textureY = 20 * hoverState;
+
+        // Draw the button using the correct slice
+        drawTexturedModalRect(this.x, this.y, 0, textureY, this.width, this.height);
+        
+        // Text
+        int textColor = 0xE0E0E0;
+        drawCenteredString(fontrenderer, this.displayString, this.x + this.width / 2, this.y + (this.height - 8) / 2, textColor);
+    }
+}
